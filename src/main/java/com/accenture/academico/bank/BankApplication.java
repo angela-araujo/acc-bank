@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+@RequestMapping("/api/v1")
 public class BankApplication {
 
 	private static Logger logger = LoggerFactory.getLogger(BankApplication.class);
