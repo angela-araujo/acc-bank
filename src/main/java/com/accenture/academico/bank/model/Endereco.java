@@ -33,6 +33,19 @@ public class Endereco {
     @Column(nullable = false, length = 255)
     private String estado;
 
+    public Endereco() { }
+
+    public Endereco(String logradouro, String numero, String complemento, String cep, String bairro, String cidade,
+            String estado) {
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+    }
+
     public long getId() {
         return id;
     }
