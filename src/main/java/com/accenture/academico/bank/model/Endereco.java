@@ -110,14 +110,22 @@ public class Endereco {
         this.estado = estado;
     }
 
-    public String getEnderecoCompleto() {
-        return logradouro + ", nº " + 
-            numero + ", " + 
-            complemento + " - " + 
-            bairro + " - " + 
-            cidade + " - " + 
-            estado + " - CEP: " + 
-            cep ;
+    public String enderecoCompleto() {
+        if (complemento != "" || complemento != null) 
+            return logradouro + ", nº " + 
+                numero + ", " + 
+                complemento + " - " + 
+                bairro + " - " + 
+                cidade + " - " + 
+                estado + " - CEP: " + 
+                cep;
+        else 
+            return logradouro + ", nº " + 
+                numero + ", " + 
+                bairro + " - " + 
+                cidade + " - " + 
+                estado + " - CEP: " + 
+                cep;
     }
 
     @Override
@@ -186,10 +194,9 @@ public class Endereco {
 
     @Override
     public String toString() {
-        // return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
-        //         + complemento + ", cep=" + cep + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado
-        //         + "]";
-        return getEnderecoCompleto();
+        return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
+                + complemento + ", cep=" + cep + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado
+                + "]";
     }
     
 }
