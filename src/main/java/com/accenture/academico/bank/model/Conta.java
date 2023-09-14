@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 
 @MappedSuperclass
 public abstract class Conta {
@@ -16,7 +17,7 @@ public abstract class Conta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(length = 10, unique = true)
+    @Column(length = 10)
     protected String numero;
 
     @ManyToOne
@@ -28,12 +29,16 @@ public abstract class Conta {
     @Column
     protected BigDecimal saldo;
 
-    public Conta(Long id, String numero, Cliente cliente, Agencia agencia, BigDecimal saldo) {
+    public Conta(Long id, String numero, Cliente cliente, Agencia agencia) {
         this.id = id;
         this.numero = numero;
         this.cliente = cliente;
         this.agencia = agencia;
-        this.saldo = saldo;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        saldo = BigDecimal.ZERO;
     }
 
     public Long getId() {
@@ -87,9 +92,9 @@ public abstract class Conta {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+        result = prime * result + ((numero == null) ? 0 : numero.hashCode());
         result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
+        result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
         result = prime * result + ((saldo == null) ? 0 : saldo.hashCode());
         return result;
     }
@@ -107,7 +112,7 @@ result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
-return false;
+            return false;
         if (numero == null) {
             if (other.numero != null)
                 return false;
@@ -117,7 +122,7 @@ return false;
             if (other.cliente != null)
                 return false;
         } else if (!cliente.equals(other.cliente))
-return false;
+            return false;
         if (agencia == null) {
             if (other.agencia != null)
                 return false;
