@@ -18,46 +18,6 @@ public class Agencia {
     @Column(nullable = false, length = 4, unique = true)
     private String numAgencia;
 
-    public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getNumAgencia() {
-		return numAgencia;
-	}
-
-	public void setNumAgencia(String numAgencia) {
-		this.numAgencia = numAgencia;
-	}
-
-	public String getNomeAgencia() {
-		return nomeAgencia;
-	}
-
-	public void setNomeAgencia(String nomeAgencia) {
-		this.nomeAgencia = nomeAgencia;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
 	@Column(nullable = false, length = 255)
     private String nomeAgencia;
 
@@ -67,6 +27,46 @@ public class Agencia {
 
     @Column(nullable = false, length = 16)
     private String telefone;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNumAgencia() {
+        return numAgencia;
+    }
+
+    public void setNumAgencia(String numAgencia) {
+        this.numAgencia = numAgencia;
+    }
+
+    public String getNomeAgencia() {
+        return nomeAgencia;
+    }
+
+    public void setNomeAgencia(String nomeAgencia) {
+        this.nomeAgencia = nomeAgencia;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 
     @Override
     public int hashCode() {
@@ -91,6 +91,11 @@ public class Agencia {
         Agencia other = (Agencia) obj;
         if (id != other.id)
             return false;
+        if (numAgencia == null) {
+            if (other.numAgencia != null)
+                return false;
+        } else if (!numAgencia.equals(other.numAgencia))
+            return false;
         if (nomeAgencia == null) {
             if (other.nomeAgencia != null)
                 return false;
@@ -109,9 +114,10 @@ public class Agencia {
         return true;
     }
 
- //   @Override
- //   public String toString() {
- //       return "Agencia [Agencia=" + numAgencia + ", nome=" + nomeAgencia + ", telefone="  + ", endereco=" + endereco+ telefone + "]";
- //   }
+    @Override
+    public String toString() {
+        return "Agencia [id=" + id + ", numAgencia=" + numAgencia + ", nomeAgencia=" + nomeAgencia + ", endereco="
+                + endereco + ", telefone=" + telefone + "]";
+    }
 
 }
