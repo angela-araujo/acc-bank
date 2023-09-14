@@ -10,12 +10,16 @@ import jakarta.transaction.Transactional;
 @DiscriminatorValue("conta_corrente")
 public class ContaCorrente extends Conta {
 
+    public ContaCorrente(Long id, String numero, Cliente cliente, Agencia agencia, BigDecimal saldo) {
+        super(id, numero, cliente, agencia, saldo);
+    }
+
     @Override
     public BigDecimal sacar(BigDecimal valor) throws Exception {
         if (valor.compareTo(saldo) > 0) {
             throw new Exception("Saldo insuficiente!");
         }
-        
+
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new Exception("Valor deve ser maior que zero.");
         }
@@ -44,7 +48,7 @@ public class ContaCorrente extends Conta {
         if (valor.compareTo(saldo) > 0) {
             throw new Exception("Saldo insuficiente!");
         }
-        
+
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new Exception("Valor deve ser maior que zero.");
         }
@@ -56,8 +60,8 @@ public class ContaCorrente extends Conta {
     }
 
     @Override
-    public void registrarExtrato(Operacao Operacao, BigDecimal valor, String descricao) {        
+    public void registrarExtrato(Operacao Operacao, BigDecimal valor, String descricao) {
         throw new UnsupportedOperationException("Unimplemented method 'registrarExtrato'");
     }
-    
+
 }

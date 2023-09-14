@@ -13,7 +13,7 @@ import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class Conta implements IConta {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -29,6 +29,14 @@ public abstract class Conta implements IConta {
 
     @Column
     protected BigDecimal saldo;
+
+    public Conta(Long id, String numero, Cliente cliente, Agencia agencia, BigDecimal saldo) {
+        this.id = id;
+        this.numero = numero;
+        this.cliente = cliente;
+        this.agencia = agencia;
+        this.saldo = saldo;
+    }
 
     public Long getId() {
         return id;
