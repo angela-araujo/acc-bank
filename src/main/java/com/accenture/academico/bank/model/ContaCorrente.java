@@ -1,16 +1,19 @@
 package com.accenture.academico.bank.model;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "numero", "agencia_id" })
+})
 @DiscriminatorValue("conta_corrente")
 public class ContaCorrente extends Conta {
 
-    public ContaCorrente(Long id, String numero, Cliente cliente, Agencia agencia, BigDecimal saldo) {
-        super(id, numero, cliente, agencia, saldo);
+    public ContaCorrente(Long id, String numero, Cliente cliente, Agencia agencia) {
+        super(id, numero, cliente, agencia);
     }
 
 }
