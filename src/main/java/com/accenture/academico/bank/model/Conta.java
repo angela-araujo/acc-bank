@@ -2,8 +2,6 @@ package com.accenture.academico.bank.model;
 
 import java.math.BigDecimal;
 
-import com.accenture.academico.bank.interfaces.IConta;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,13 +10,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Conta implements IConta {
+public abstract class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     protected String numero;
 
     @ManyToOne
@@ -89,9 +87,9 @@ public abstract class Conta implements IConta {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+result = prime * result + ((numero == null) ? 0 : numero.hashCode());
         result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-        result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
+result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
         result = prime * result + ((saldo == null) ? 0 : saldo.hashCode());
         return result;
     }
@@ -109,7 +107,7 @@ public abstract class Conta implements IConta {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
-            return false;
+return false;
         if (numero == null) {
             if (other.numero != null)
                 return false;
@@ -119,7 +117,7 @@ public abstract class Conta implements IConta {
             if (other.cliente != null)
                 return false;
         } else if (!cliente.equals(other.cliente))
-            return false;
+return false;
         if (agencia == null) {
             if (other.agencia != null)
                 return false;
