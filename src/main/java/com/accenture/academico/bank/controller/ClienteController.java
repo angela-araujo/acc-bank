@@ -2,6 +2,7 @@ package com.accenture.academico.bank.controller;
 
 import java.util.List;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +47,30 @@ public class ClienteController {
     }
 
     @GetMapping("/name/{nome}")
-    public List<Cliente> getByNome(@PathVariable(value = "nome") String nome) {
-        return clienteService.getClienteByName(nome);
+    public ResponseEntity<Object> getByNome(@PathVariable(value = "nome") String nome) {
+        try {
+            List<Cliente> clientes = clienteService.getClienteByName(nome);
+
+            if (clientes.isEmpty()) {
+                throw new Exception("Cliente não encontrado");
+            }
+            return ResponseEntity.ok().body(clientes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     
     @GetMapping("/cpf/{cpf}")
-    public Cliente getClienteByCPF(@PathVariable(value = "cpf") String cpf) {
-        return clienteService.getClienteByCPF(cpf);
+    public ResponseEntity<Object> getClienteByCPF(@PathVariable(value = "cpf") String cpf) {
+        try {
+            Cliente cliente = clienteService.getClienteByCPF(cpf);
+            if (cliente == null) {
+                throw new Exception("CPF não encontrado");
+            }
+            return ResponseEntity.ok().body(cliente);            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +79,7 @@ public class ClienteController {
             Cliente newCliente = clienteService.saveOrUpdateCliente(cliente);
             return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage());
+            return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage() + " \n:: Causa: " + e.getCause());
         }
     }
 

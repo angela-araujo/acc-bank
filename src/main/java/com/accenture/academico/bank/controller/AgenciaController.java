@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.academico.bank.BankApplication;
 import com.accenture.academico.bank.model.Agencia;
-import com.accenture.academico.bank.model.Cliente;
 import com.accenture.academico.bank.service.AgenciaService;
 
 @RestController
@@ -48,13 +47,33 @@ public class AgenciaController {
     }
 
     @GetMapping("/numagencia/{numAgencia}")
-    public Agencia getAgenciaByNumAgencia(@PathVariable(value = "numAgencia") String numAgencia) {
-        return agenciaService.getAgenciaByNumAgencia(numAgencia);
+    public ResponseEntity<Object> getAgenciaByNumAgencia(@PathVariable(value = "numAgencia") String numAgencia) {
+        try {            
+            Agencia agencia = agenciaService.getAgenciaByNumAgencia(numAgencia);
+            if (agencia == null) {
+                throw new Exception("Agencia não encontrada.");
+            }
+            return ResponseEntity.ok().body(agencia);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/name/{nomeAgencia}")
-    public List<Agencia> getAgenciaByNomeAgencia(@PathVariable(value = "nomeAgencia") String nomeAgencia) {
-        return agenciaService.getAgenciaByNomeAgencia(nome);
+    public ResponseEntity<Object> getAgenciaByNomeAgencia(@PathVariable(value = "nomeAgencia") String nomeAgencia) {
+        try {
+            List<Agencia> agencias = agenciaService.getAgenciaByName(nomeAgencia);
+            logger.info(":: AgenciaController.getById :: agencias = " + agencias);
+            if (agencias.isEmpty()) {
+                throw new Exception("Nome de agencia não encontrado");
+            }
+            return ResponseEntity.ok().body(agencias);
+            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

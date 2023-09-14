@@ -34,8 +34,8 @@ public class AgenciaService {
         agenciaRepository.deleteById(id);
     }
     
-    public List<Agencia> getAgenciaByNumAgencia(String numAgencia) {
-        return agenciaRepository.findByP (numAgencia);
+    public Agencia getAgenciaByNumAgencia(String numAgencia) {
+        return agenciaRepository.findByNumAgencia(numAgencia);
     }
 
     public List<Agencia> getAgenciaByName(String nomeAgencia) {

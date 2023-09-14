@@ -15,7 +15,7 @@ public class Agencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
-    @Column(nullable = false, length = 4)
+    @Column(nullable = false, length = 4, unique = true)
     private String numAgencia;
 
     public long getId() {
