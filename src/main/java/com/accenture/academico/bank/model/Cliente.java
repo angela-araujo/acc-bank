@@ -40,6 +40,18 @@ public class Cliente {
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
 
+    public Cliente() { }
+    
+    public Cliente(String nome, String cpf, String telefone, String email, LocalDate dataNascimento,
+            Endereco endereco) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.endereco = endereco;
+    }
+
     public long getId() {
         return id;
     }
