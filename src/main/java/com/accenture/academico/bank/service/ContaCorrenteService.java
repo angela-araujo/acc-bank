@@ -60,6 +60,7 @@ public class ContaCorrenteService implements IConta {
         }
 
         conta.setSaldo(conta.getSaldo().subtract(valor));
+        contaCorrenteRepository.save((ContaCorrente)conta);
 
         registrarExtrato(conta, Operacao.SAQUE, valor, null);
 
@@ -73,7 +74,6 @@ public class ContaCorrenteService implements IConta {
         }
 
         conta.setSaldo(conta.getSaldo().add(valor));
-
         contaCorrenteRepository.save((ContaCorrente)conta);
 
         registrarExtrato(conta, Operacao.DEPOSITO, valor, null);
@@ -96,6 +96,7 @@ public class ContaCorrenteService implements IConta {
         // Deposita no destino
         contaDestino.setSaldo(contaDestino.getSaldo().add(valor));
 
+        // Salva no banco as operações
         contaCorrenteRepository.save((ContaCorrente)contaOrigem);
         contaCorrenteRepository.save((ContaCorrente)contaDestino);
 
