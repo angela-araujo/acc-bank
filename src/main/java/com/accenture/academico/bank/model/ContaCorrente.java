@@ -12,8 +12,13 @@ import jakarta.persistence.UniqueConstraint;
 @DiscriminatorValue("conta_corrente")
 public class ContaCorrente extends Conta {
 
+    public ContaCorrente() {
+        super();
+    }
+
     public ContaCorrente(Long id, String numero, Cliente cliente, Agencia agencia) {
         super(id, numero, cliente, agencia);
     }
+
 
 }

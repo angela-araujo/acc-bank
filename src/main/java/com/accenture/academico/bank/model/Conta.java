@@ -29,6 +29,8 @@ public abstract class Conta {
     @Column
     protected BigDecimal saldo;
 
+    public Conta() { }
+    
     public Conta(Long id, String numero, Cliente cliente, Agencia agencia) {
         this.id = id;
         this.numero = numero;

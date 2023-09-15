@@ -28,6 +28,16 @@ public class Agencia {
     @Column(nullable = false, length = 16)
     private String telefone;
 
+    public Agencia() { }
+    
+    public Agencia(long id, String numAgencia, String nomeAgencia, Endereco endereco, String telefone) {
+        this.id = id;
+        this.numAgencia = numAgencia;
+        this.nomeAgencia = nomeAgencia;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+
     public long getId() {
         return id;
     }
