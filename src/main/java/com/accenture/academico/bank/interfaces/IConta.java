@@ -12,5 +12,6 @@ public interface IConta {
 
     public void transferir(Conta contaOrigem, Conta contaDestino, BigDecimal valor) throws Exception;
 
-    public void registrarExtrato(Conta conta, Operacao Operacao, BigDecimal valor, String descricao) throws Exception;
+    public void registrarExtrato(Conta conta, Operacao operacao, BigDecimal valorDaOperacao,
+            BigDecimal saldoAposOperacao, String descricao) throws Exception;
 }

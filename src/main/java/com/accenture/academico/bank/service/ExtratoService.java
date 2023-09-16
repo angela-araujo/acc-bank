@@ -1,5 +1,8 @@
 package com.accenture.academico.bank.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +19,9 @@ public class ExtratoService {
         return extratoRepository.save(extrato);
     }
 
-    // public List<Extrato> listExtratoByConta(Long contaId, LocalDate dtInicio, LocalDate dtFim) {
-    //     return extratoRepository.findByConta(contaId, dtInicio, dtFim);
-    // }
+    public List<Extrato> listExtratoByConta(Long contaId, LocalDate dtInicio, LocalDate dtFim) {
+        
+        return null;
+    }
 
 }

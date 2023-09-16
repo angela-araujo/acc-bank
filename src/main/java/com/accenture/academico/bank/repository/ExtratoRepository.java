@@ -9,6 +9,6 @@ import com.accenture.academico.bank.model.Extrato;
 public interface ExtratoRepository extends JpaRepository<Extrato, Long> {
 
     // @Query("SELECT e FROM extrato e WHERE e.conta_corrente_id = ?1 AND e.dt_movimento BETWEEN ?2 AND ?3")
-    // List<Extrato> findByConta(Long contaId, LocalDate dtInicio, LocalDate dtFim);
+    // List<Extrato> findOperacoesByContaAndPeriodo(Long contaId, LocalDate dtInicio, LocalDate dtFim);
     
 }

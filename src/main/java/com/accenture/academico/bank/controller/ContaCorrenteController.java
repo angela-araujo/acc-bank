@@ -34,11 +34,12 @@ public class ContaCorrenteController {
         try {
 
             ContaCorrente newConta = contaCorrenteService.save(conta);
-            logger.info("::Criando conta..." + newConta);
+            logger.info("::ContaCorrenteController:: save(): " + newConta);
             return ResponseEntity.status(HttpStatus.CREATED).body(newConta);
 
         } catch (DataIntegrityViolationException e) {
-
+            logger.error("::ContaCorrenteController:: save()\nErrorMessage: " + e.getMessage() +
+                "\nErrorCause" + e.getCause());
             if (e.getCause() instanceof ConstraintViolationException) {
                 String mensagemDeErro = "Erro ao criar Conta. Já existe uma conta com o mesmo número e agência.";
                 return ResponseEntity.badRequest().body(mensagemDeErro);
@@ -46,6 +47,8 @@ public class ContaCorrenteController {
                 return ResponseEntity.badRequest().body("Erro de integridade de dados: " + e.getMessage());
             }
         } catch (Exception e) {
+            logger.error("::ContaCorrenteController:: save()\nErrorMessage: " + e.getMessage() +
+                "\nErrorCause" + e.getCause());
             return ResponseEntity.badRequest()
                     .body("MessageErro: " + e.getMessage() + "\n\nCausaErro: " + e.getCause());
         }
@@ -60,6 +63,8 @@ public class ContaCorrenteController {
             BigDecimal saldo = contaCorrenteService.sacar(conta, valor);
             return ResponseEntity.ok().body("saldo: " + saldo);
         } catch (Exception e) {
+            logger.error("::ContaCorrenteController:: sacar()\nErrorMessage: " + e.getMessage() +
+                "\nErrorCause" + e.getCause());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -74,6 +79,8 @@ public class ContaCorrenteController {
             contaCorrenteService.depositar(conta, valor);
             return ResponseEntity.ok().body("Depósito realizado com sucesso");
         } catch (Exception e) {
+            logger.error("::ContaCorrenteController:: depositar()\nErrorMessage: " + e.getMessage() +
+                "\nErrorCause" + e.getCause());
             return ResponseEntity.badRequest().body(e.getCause() + " \nMensagemErro: " + e.getMessage());
         }
     }
@@ -93,6 +100,8 @@ public class ContaCorrenteController {
             return ResponseEntity.ok().body("Transferência realizada com sucesso.");
 
         } catch (Exception e) {
+            logger.error("\n::ContaCorrenteController:: transferir()\nErrorMessage: " + e.getMessage() +
+                "\nErrorCause" + e.getCause());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
