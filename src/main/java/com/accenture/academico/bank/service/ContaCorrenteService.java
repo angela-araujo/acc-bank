@@ -100,12 +100,13 @@ public class ContaCorrenteService implements IConta {
         contaCorrenteRepository.save((ContaCorrente)contaOrigem);
         contaCorrenteRepository.save((ContaCorrente)contaDestino);
 
-        registrarExtrato(contaOrigem, Operacao.TRANSFENCIA, valor, "Conta destino: " + contaDestino);
+        registrarExtrato(contaOrigem, Operacao.TRANSFERENCIA, valor, "Conta destino: " + contaDestino);
     }
 
     @Override
     public void registrarExtrato(Conta conta, Operacao operacao, BigDecimal valor, String descricao) {
         // throw new UnsupportedOperationException("Unimplemented method 'registrarExtrato'");
+        // @TODO Implementar método 
         System.out.println("Extrato: " + conta + " | Operacao: " + operacao + " | valor: " + valor + " | descricao: " + descricao);
     }
 

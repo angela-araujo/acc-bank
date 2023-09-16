@@ -3,5 +3,7 @@ package com.accenture.academico.bank.model;
 public enum Operacao {
     DEPOSITO,
     SAQUE,
-    TRANSFENCIA
+    TRANSFERENCIA,
+    DEBITO_TRANSFERENCIA,
+    CREDITO_TRANSFERENCIA,
 }
