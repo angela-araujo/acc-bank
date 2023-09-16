@@ -2,6 +2,7 @@ package com.accenture.academico.bank.model;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -24,6 +25,7 @@ public class Cliente {
     private String nome;
 
     @Column(nullable = false, length = 11, unique = true)
+    @CPF
     private String cpf;
 
     @Column(nullable = false, length = 16)

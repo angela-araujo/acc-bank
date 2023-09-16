@@ -1,6 +1,8 @@
 package com.accenture.academico.bank.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accenture.academico.bank.BankApplication;
 import com.accenture.academico.bank.model.Cliente;
 import com.accenture.academico.bank.service.ClienteService;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @RestController
 @RequestMapping("/api/v1/cliente")
@@ -76,8 +81,26 @@ public class ClienteController {
     public ResponseEntity<Object> save(@RequestBody Cliente cliente) {
         try {
             Cliente newCliente = clienteService.saveOrUpdateCliente(cliente);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
+            
+        } catch (ConstraintViolationException e) {
+
+            List<String> msgErro = new ArrayList<>();
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String propertyPath = violation.getPropertyPath().toString();
+                if (propertyPath.equals("cpf")) {
+                    return ResponseEntity.badRequest().body("CPF inválido.");
+                }
+                String message = violation.getMessage();
+                msgErro.add("Erro de validação em " + propertyPath + ": " + message);
+            }
+            return ResponseEntity.badRequest().body(msgErro);
+
         } catch (Exception e) {
+            logger.error("::ClienteController:: save()\nErrorMessage: " + e.getMessage() +
+                    "\nErrorCause: " + e.getCause());
             return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage() + " \n:: Causa: " + e.getCause());
         }
     }
