@@ -89,11 +89,10 @@ public class ContaCorrenteService implements IConta {
 
         Optional<ContaCorrente> contaCorrente = contaCorrenteRepository.findById(id);
 
-        if (contaCorrenteRepository.findById(id).isPresent()) {
-            return contaCorrente.get();
-        } else {
+        if (!contaCorrenteRepository.findById(id).isPresent()) {
             throw new Exception("Conta não encontrada");
-        }
+        } 
+        return contaCorrente.get();
     }
 
     public ContaCorrente save(ContaCorrente contaCorrente) throws Exception{
