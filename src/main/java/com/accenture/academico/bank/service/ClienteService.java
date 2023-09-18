@@ -33,14 +33,14 @@ public class ClienteService {
         return clienteRepository.findByPartialName(nome);
     }
     
-    public Cliente getClienteById(long id) {
+    public Cliente getClienteById(long id) throws Exception {
         Cliente cliente = clienteRepository.findById(id).get();
 
-        if (clienteRepository.findById(id).isPresent()) {
-            return cliente;
+        if (!clienteRepository.findById(id).isPresent()) {
+            throw new Exception("Cliente não encontrado");
         }
-
-        return null;
+        
+        return cliente;
     }
 
     public Cliente getClienteByCPF(String cpf) {

@@ -44,6 +44,17 @@ public class Cliente {
 
     public Cliente() { }
     
+    public Cliente(long id, String nome, @CPF String cpf, String telefone, String email, LocalDate dataNascimento,
+            Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.endereco = endereco;
+    }
+
     public Cliente(String nome, String cpf, String telefone, String email, LocalDate dataNascimento,
             Endereco endereco) {
         this.nome = nome;

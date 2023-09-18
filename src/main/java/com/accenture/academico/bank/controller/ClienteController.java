@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.academico.bank.BankApplication;
+import com.accenture.academico.bank.dto.ClienteDTO;
 import com.accenture.academico.bank.model.Cliente;
+import com.accenture.academico.bank.model.Endereco;
 import com.accenture.academico.bank.service.ClienteService;
 
 import jakarta.validation.ConstraintViolation;
@@ -46,6 +48,8 @@ public class ClienteController {
             Cliente cliente = clienteService.getClienteById(id);
             return ResponseEntity.ok().body(cliente);
         } catch (Exception e) {
+            logger.error("::ClienteController:: getById()\nErrorMessage: \n" + e.getMessage() +
+                    "\nErrorCause: " + e.getCause());
             return ResponseEntity.badRequest().body(null);
         }
     }
@@ -78,8 +82,28 @@ public class ClienteController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> save(@RequestBody Cliente cliente) {
+    public ResponseEntity<Object> save(@RequestBody ClienteDTO clienteDTO) {
         try {
+
+            Endereco endereco = new Endereco(
+                clienteDTO.getEndereco().getLogradouro(),
+                clienteDTO.getEndereco().getNumero(),
+                clienteDTO.getEndereco().getComplemento(),
+                clienteDTO.getEndereco().getCep(),
+                clienteDTO.getEndereco().getBairro(),
+                clienteDTO.getEndereco().getCidade(),
+                clienteDTO.getEndereco().getEstado()
+            );
+
+            Cliente cliente = new Cliente(
+                clienteDTO.getNome(),
+                clienteDTO.getCpf(),
+                clienteDTO.getTelefone(),
+                clienteDTO.getEmail(),
+                clienteDTO.getDataNascimento(),
+                endereco
+            );
+
             Cliente newCliente = clienteService.saveOrUpdateCliente(cliente);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
@@ -99,7 +123,7 @@ public class ClienteController {
             return ResponseEntity.badRequest().body(msgErro);
 
         } catch (Exception e) {
-            logger.error("::ClienteController:: save()\nErrorMessage: " + e.getMessage() +
+            logger.error("::ClienteController:: save()\nErrorMessage: \n" + e.getMessage() +
                     "\nErrorCause: " + e.getCause());
             return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage() + " \n:: Causa: " + e.getCause());
         }
