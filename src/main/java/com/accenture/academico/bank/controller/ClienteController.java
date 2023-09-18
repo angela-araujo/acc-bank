@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,15 +43,14 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Object> getById(@PathVariable(value = "id") Long id) {
         try {
-            logger.info(":: ClienteController.getById :: id = " + id);
             Cliente cliente = clienteService.getClienteById(id);
             return ResponseEntity.ok().body(cliente);
         } catch (Exception e) {
             logger.error("::ClienteController:: getById()\nErrorMessage: \n" + e.getMessage() +
                     "\nErrorCause: " + e.getCause());
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Cliente não encontrado");
         }
     }
 
@@ -84,15 +84,14 @@ public class ClienteController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(@RequestBody ClienteDTO clienteDTO) {
         try {
-
             Endereco endereco = new Endereco(
-                clienteDTO.getEndereco().getLogradouro(),
-                clienteDTO.getEndereco().getNumero(),
-                clienteDTO.getEndereco().getComplemento(),
-                clienteDTO.getEndereco().getCep(),
-                clienteDTO.getEndereco().getBairro(),
-                clienteDTO.getEndereco().getCidade(),
-                clienteDTO.getEndereco().getEstado()
+                clienteDTO.getLogradouro(),
+                clienteDTO.getNumero(),
+                clienteDTO.getComplemento(),
+                clienteDTO.getCep(),
+                clienteDTO.getBairro(),
+                clienteDTO.getCidade(),
+                clienteDTO.getEstado()
             );
 
             Cliente cliente = new Cliente(
@@ -132,8 +131,106 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            clienteService.deleteCliente(id);
+            Cliente cliente = clienteService.getClienteById(id);
+            clienteService.deleteCliente(cliente.getId());
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cliente excluído com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage());
+        }
+    }
+    
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> update(@RequestBody ClienteDTO clienteDTO, @PathVariable(value = "id") Long id) {
+        try {
+
+            Cliente cliente = clienteService.getClienteById(id);
+
+            if ((clienteDTO.getLogradouro() != null) || 
+                (clienteDTO.getNumero() != null) || 
+                (clienteDTO.getComplemento() != null) ||
+                (clienteDTO.getCep() != null) ||
+                (clienteDTO.getBairro() != null) ||
+                (clienteDTO.getCidade() != null) ||(clienteDTO.getEstado() != null)) {
+                
+            Endereco endereco = cliente.getEndereco();
+
+            if (clienteDTO.getLogradouro() != null) {
+                endereco.setLogradouro(clienteDTO.getLogradouro());
+            }
+
+            if (clienteDTO.getNumero() != null) {
+                endereco.setNumero(clienteDTO.getNumero());
+            }
+            
+            if (clienteDTO.getComplemento() != null) {
+                endereco.setComplemento(clienteDTO.getComplemento());
+            }
+
+            if (clienteDTO.getCep() != null) {
+                endereco.setCep(clienteDTO.getCep());
+            }
+
+            if (clienteDTO.getBairro() != null) {
+                endereco.setBairro(clienteDTO.getBairro());
+            }
+
+            if (clienteDTO.getCidade() != null) {
+                endereco.setCidade(clienteDTO.getCidade());
+            }
+
+            if (clienteDTO.getEstado() != null) {
+                endereco.setEstado(clienteDTO.getEstado());
+            }
+
+            if (clienteDTO.getNome() != null) {
+                cliente.setNome(clienteDTO.getNome());
+            }
+
+            if (clienteDTO.getCpf() != null) {
+                cliente.setCpf(clienteDTO.getCpf());
+            }
+
+            if (clienteDTO.getTelefone() != null) {
+                cliente.setTelefone(clienteDTO.getTelefone());
+            }
+
+            if (clienteDTO.getEmail() != null) {
+                cliente.setEmail(clienteDTO.getEmail());
+            }
+
+            if (clienteDTO.getDataNascimento() != null) {
+                cliente.setDataNascimento(clienteDTO.getDataNascimento());
+            }
+
+                cliente.setEndereco(endereco);
+            }           
+
+            //////////
+            
+
+            if (clienteDTO.getNome() != null) {
+                cliente.setNome(clienteDTO.getNome());
+            }
+
+            if (clienteDTO.getCpf() != null) {
+                cliente.setCpf(clienteDTO.getCpf());
+            }
+
+            if (clienteDTO.getTelefone() != null) {
+                cliente.setTelefone(clienteDTO.getTelefone());
+            }
+
+            if (clienteDTO.getEmail() != null) {
+                cliente.setEmail(clienteDTO.getEmail());
+            }
+
+            if (clienteDTO.getDataNascimento() != null) {
+                cliente.setDataNascimento(clienteDTO.getDataNascimento());
+            }
+
+            Cliente clienteUpdated = clienteService.saveOrUpdateCliente(cliente);
+
+            return ResponseEntity.status(HttpStatus.OK).body(clienteUpdated);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage());
         }

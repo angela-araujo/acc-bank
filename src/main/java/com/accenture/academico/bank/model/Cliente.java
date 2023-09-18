@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
 
 @Entity
 public class Cliente {
@@ -32,6 +33,7 @@ public class Cliente {
     private String telefone;
 
     @Column(nullable = false, length = 255)
+    @Email
     private String email;
 
     @Column(nullable = false)

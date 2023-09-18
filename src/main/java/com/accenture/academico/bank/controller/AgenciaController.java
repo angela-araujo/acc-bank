@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,13 +87,13 @@ public class AgenciaController {
     public ResponseEntity<Object> save(@RequestBody AgenciaDTO agenciaDTO) {
         try {
             Endereco endereco = new Endereco(
-                agenciaDTO.getEndereco().getLogradouro(),
-                agenciaDTO.getEndereco().getNumero(),
-                agenciaDTO.getEndereco().getComplemento(),
-                agenciaDTO.getEndereco().getCep(),
-                agenciaDTO.getEndereco().getBairro(),
-                agenciaDTO.getEndereco().getCidade(),
-                agenciaDTO.getEndereco().getEstado()
+                agenciaDTO.getLogradouro(),
+                agenciaDTO.getNumero(),
+                agenciaDTO.getComplemento(),
+                agenciaDTO.getCep(),
+                agenciaDTO.getBairro(),
+                agenciaDTO.getCidade(),
+                agenciaDTO.getEstado()
             );
             
             Agencia agencia = new Agencia(
@@ -125,6 +126,75 @@ public class AgenciaController {
         try {
             agenciaService.deleteAgencia(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Agencia excluída com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage());
+        }
+    }
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> update(@RequestBody AgenciaDTO agenciaDTO, @PathVariable(value = "id") Long id) {
+        try {
+
+            Agencia agencia = agenciaService.getAgenciaById(id);
+
+            if ((agenciaDTO.getLogradouro() != null) || 
+                (agenciaDTO.getNumero() != null) || 
+                (agenciaDTO.getComplemento() != null) ||
+                (agenciaDTO.getCep() != null) ||
+                (agenciaDTO.getBairro() != null) ||
+                (agenciaDTO.getCidade() != null) ||(agenciaDTO.getEstado() != null)) {
+                
+            Endereco endereco = agencia.getEndereco();
+
+            if (agenciaDTO.getLogradouro() != null) {
+                endereco.setLogradouro(agenciaDTO.getLogradouro());
+            }
+
+            if (agenciaDTO.getNumero() != null) {
+                endereco.setNumero(agenciaDTO.getNumero());
+            }
+            
+            if (agenciaDTO.getComplemento() != null) {
+                endereco.setComplemento(agenciaDTO.getComplemento());
+            }
+
+            if (agenciaDTO.getCep() != null) {
+                endereco.setCep(agenciaDTO.getCep());
+            }
+
+            if (agenciaDTO.getBairro() != null) {
+                endereco.setBairro(agenciaDTO.getBairro());
+            }
+
+            if (agenciaDTO.getCidade() != null) {
+                endereco.setCidade(agenciaDTO.getCidade());
+            }
+
+            if (agenciaDTO.getEstado() != null) {
+                endereco.setEstado(agenciaDTO.getEstado());
+            }
+
+            if (agenciaDTO.getTelefone() != null) {
+                agencia.setTelefone(agenciaDTO.getTelefone());
+            }
+
+                agencia.setEndereco(endereco);
+            }           
+
+            //////////
+            
+
+            if (agenciaDTO.getNomeAgencia() != null) {
+                agencia.setNomeAgencia(agenciaDTO.getNomeAgencia());
+            }
+
+            if (agenciaDTO.getTelefone() != null) {
+                agencia.setTelefone(agenciaDTO.getTelefone());
+            }
+
+            Agencia agenciaUpdated = agenciaService.saveOrUpdateAgencia(agencia);
+
+            return ResponseEntity.status(HttpStatus.OK).body(agenciaUpdated);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(":: Erro: " + e.getMessage());
         }
