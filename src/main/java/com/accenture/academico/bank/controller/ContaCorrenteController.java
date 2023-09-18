@@ -31,6 +31,9 @@ import com.accenture.academico.bank.service.ClienteService;
 import com.accenture.academico.bank.service.ContaCorrenteService;
 import com.accenture.academico.bank.service.ExtratoService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Conta Corrente", description = "Operações relacionadas a contas correntes")
 @RestController
 @RequestMapping("/api/v1/contacorrente")
 public class ContaCorrenteController {

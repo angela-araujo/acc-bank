@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Cliente {
@@ -30,10 +31,11 @@ public class Cliente {
     private String cpf;
 
     @Column(nullable = false, length = 16)
+    @Pattern(regexp = "^\\d{10,16}$", message = "O telefone deve conter entre 10 e 16 dígitos.")
     private String telefone;
 
     @Column(nullable = false, length = 255)
-    @Email
+    @Email(message = "Formato de email inválido")
     private String email;
 
     @Column(nullable = false)
@@ -44,8 +46,9 @@ public class Cliente {
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
 
-    public Cliente() { }
-    
+    public Cliente() {
+    }
+
     public Cliente(long id, String nome, @CPF String cpf, String telefone, String email, LocalDate dataNascimento,
             Endereco endereco) {
         this.id = id;

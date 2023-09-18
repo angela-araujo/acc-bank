@@ -25,9 +25,11 @@ import com.accenture.academico.bank.model.Agencia;
 import com.accenture.academico.bank.model.Endereco;
 import com.accenture.academico.bank.service.AgenciaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
+@Tag(name = "Agência", description = "Operações relacionadas a agências")
 @RestController
 @RequestMapping("/api/v1/agencia")
 public class AgenciaController {
