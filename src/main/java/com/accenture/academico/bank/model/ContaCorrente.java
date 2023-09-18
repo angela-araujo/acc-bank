@@ -20,5 +20,7 @@ public class ContaCorrente extends Conta {
         super(id, numero, cliente, agencia);
     }
 
-
+    public ContaCorrente(String numero, Cliente cliente, Agencia agencia) {
+        super(numero, cliente, agencia);
+    }
 }

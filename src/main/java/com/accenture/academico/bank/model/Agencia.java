@@ -8,17 +8,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Agencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     
     @Column(nullable = false, length = 4, unique = true)
+    @Pattern(regexp = "^[0-9]+$", message = "O número da agência deve conter apenas dígitos.")
+    @Size(min = 4, max = 4, message = "O número da agência deve ter exatamente 4 dígitos.")
+    @NotNull(message = "Número da agencia não informado.")
     private String numAgencia;
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false, length = 255, unique = true)
     private String nomeAgencia;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -30,19 +36,26 @@ public class Agencia {
 
     public Agencia() { }
     
-    public Agencia(long id, String numAgencia, String nomeAgencia, Endereco endereco, String telefone) {
+    public Agencia(String numAgencia, String nomeAgencia, Endereco endereco, String telefone) {
+        this.numAgencia = numAgencia;
+        this.nomeAgencia = nomeAgencia;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+    
+    public Agencia(Long id, String numAgencia, String nomeAgencia, Endereco endereco, String telefone) {
         this.id = id;
         this.numAgencia = numAgencia;
         this.nomeAgencia = nomeAgencia;
         this.endereco = endereco;
         this.telefone = telefone;
     }
-
-    public long getId() {
+    
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

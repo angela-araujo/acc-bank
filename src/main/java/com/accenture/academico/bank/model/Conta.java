@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @MappedSuperclass
 public abstract class Conta {
@@ -18,6 +20,8 @@ public abstract class Conta {
     protected Long id;
 
     @Column(length = 10)
+    @Pattern(regexp = "^[0-9]+$", message = "O número da conta deve conter apenas dígitos.")
+    @Size(min = 1, max = 10, message = "O número da conta deve ter no mínio 1 dígito e no máximo 10 dígitos.")
     protected String numero;
 
     @ManyToOne
@@ -29,11 +33,18 @@ public abstract class Conta {
     @Column
     protected BigDecimal saldo;
 
-    public Conta() { }
-    
+    public Conta() {
+    }
+
     public Conta(Long id, String numero, Cliente cliente, Agencia agencia) {
         this.id = id;
         this.numero = numero;
+        this.cliente = cliente;
+        this.agencia = agencia;
+    }
+
+    public Conta(String numero, Cliente cliente, Agencia agencia) {
+        setNumero(numero);
         this.cliente = cliente;
         this.agencia = agencia;
     }
@@ -56,7 +67,21 @@ public abstract class Conta {
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        // Verifica se o número é nulo ou vazio
+        if (numero == null || numero.isEmpty()) {
+            // Defina o número como uma string de 10 zeros
+            this.numero = "0000000000";
+        } else {
+            // Remove qualquer caractere não numérico
+            numero = numero.replaceAll("[^0-9]", "");
+
+            // Se o número tiver menos de 10 dígitos, preencha com zeros à esquerda
+            if (numero.length() < 10) {
+                this.numero = String.format("%010d", Long.parseLong(numero));
+            } else {
+                this.numero = numero;
+            }
+        }
     }
 
     public Cliente getCliente() {

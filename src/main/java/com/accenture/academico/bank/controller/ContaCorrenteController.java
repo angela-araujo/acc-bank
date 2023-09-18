@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.academico.bank.BankApplication;
+import com.accenture.academico.bank.dto.ContaCorrenteDTO;
+import com.accenture.academico.bank.model.Agencia;
+import com.accenture.academico.bank.model.Cliente;
 import com.accenture.academico.bank.model.ContaCorrente;
 import com.accenture.academico.bank.model.Extrato;
+import com.accenture.academico.bank.service.AgenciaService;
+import com.accenture.academico.bank.service.ClienteService;
 import com.accenture.academico.bank.service.ContaCorrenteService;
 import com.accenture.academico.bank.service.ExtratoService;
 
@@ -34,6 +39,12 @@ public class ContaCorrenteController {
 
     @Autowired
     private ContaCorrenteService contaCorrenteService;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private AgenciaService agenciaService;
 
     @Autowired
     private ExtratoService extratoService;
@@ -51,11 +62,14 @@ public class ContaCorrenteController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> save(@RequestBody ContaCorrente conta) {
+    public ResponseEntity<Object> save(@RequestBody ContaCorrenteDTO contaDTO) {
         try {
 
+            Cliente cliente = clienteService.getClienteById(contaDTO.getClienteId());
+            Agencia agencia = agenciaService.getAgenciaById(contaDTO.getAgenciaId());
+            ContaCorrente conta = new ContaCorrente(contaDTO.getNumero(), cliente, agencia);
+
             ContaCorrente newConta = contaCorrenteService.save(conta);
-            logger.info("::ContaCorrenteController:: save(): " + newConta);
             return ResponseEntity.status(HttpStatus.CREATED).body(newConta);
 
         } catch (DataIntegrityViolationException e) {
